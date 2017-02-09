@@ -14,7 +14,7 @@ class EventsController extends Controller
      */
     public function index()
     {
-        $data = Event::get(['title', 'start', 'color']);
+        $data = Event::get(['title', 'start', 'end', 'color']);
 
         return Response()->json($data);
     }
@@ -37,7 +37,14 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $event = new Event();
+        $event->title = $request->title;
+        $event->start = $request->date_start . ' ' . $request->time_start;
+        $event->end = $request->date_end;
+        $event->color = $request->color;
+        $event->save();
+
+        return redirect('/');
     }
 
     /**

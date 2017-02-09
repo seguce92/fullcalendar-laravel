@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('events', 'EventsController',['only' => ['index']]);
+Route::resource('events', 'EventsController',['only' => ['index', 'store']]);
