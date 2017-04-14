@@ -22,7 +22,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                {{ Form::label('title', 'FECHA INICIO') }}
+                                {{ Form::label('title', 'TITULO DE EVENTO') }}
                                 {{ Form::text('title', old('title'), ['class' => 'form-control']) }}
                             </div>
 
@@ -60,6 +60,53 @@
             </div>
             {{ Form::close() }}
             <div id='calendar'></div>
+
+            <div id="modal-event" class="modal fade" tabindex="-1" data-backdrop="static">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>DETALLES DE EVENTO</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                {{ Form::label('_title', 'TITULO DE EVENTO') }}
+                                {{ Form::text('_title', old('_title'), ['class' => 'form-control']) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ Form::label('_date_start', 'FECHA INICIO') }}
+                                {{ Form::text('_date_start', old('_date_start'), ['class' => 'form-control', 'readonly' => 'true']) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ Form::label('_time_start', 'HORA INICIO') }}
+                                {{ Form::text('_time_start', old('_time_start'), ['class' => 'form-control']) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ Form::label('_date_end', 'FECHA HORA FIN') }}
+                                {{ Form::text('_date_end', old('_date_end'), ['class' => 'form-control']) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ Form::label('_color', 'COLOR') }}
+                                <div class="input-group colorpicker">
+                                    {{ Form::text('_color', old('_color'), ['class' => 'form-control']) }}
+                                    <span class="input-group-addon">
+                                        <i></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a id="delete" data-href="{{ url('events') }}" data-id="" class="btn btn-danger">ELIMINAR</a>
+                            <button type="button" class="btn btn-dafault" data-dismiss="modal">CANCELAR</button>
+                            {!! Form::submit('ACTUALIZAR', ['class' => 'btn btn-success']) !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </body>
     {!! Html::script('vendor/seguce92/jquery.min.js') !!}
@@ -89,7 +136,20 @@
                     $('#responsive-modal').modal('show');
                 },
 
-    			events: BASEURL + '/events'
+    			events: BASEURL + '/events',
+
+                eventClick: function(event, jsEvent, view){
+                    var date_start = $.fullCalendar.moment(event.start).format('YYYY-MM-DD');
+                    var time_start = $.fullCalendar.moment(event.start).format('hh:mm:ss');
+                    var date_end = $.fullCalendar.moment(event.end).format('YYYY-MM-DD hh:mm:ss');
+                    $('#modal-event #delete').attr('data-id', event.id);
+                    $('#modal-event #_title').val(event.title);
+                    $('#modal-event #_date_start').val(date_start);
+                    $('#modal-event #_time_start').val(time_start);
+                    $('#modal-event #_date_end').val(date_end);
+                    $('#modal-event #_color').val(event.color);
+                    $('#modal-event').modal('show');
+                }
     		});
 
     	});
@@ -106,6 +166,24 @@
             date: true,
             shortTime: false,
             format: 'YYYY-MM-DD HH:mm:ss'
+        });
+
+        $('#delete').on('click', function(){
+            var x = $(this);
+            var delete_url = x.attr('data-href')+'/'+x.attr('data-id');
+
+            $.ajax({
+                url: delete_url,
+                type: 'PATCH',
+                success: function(result){
+                    $('#modal-event').modal('hide');
+                    alert(result.message);
+                },
+                error: function(result){
+                    $('#modal-event').modal('hide');
+                    alert(result.message);
+                }
+            });
         });
 
     </script>

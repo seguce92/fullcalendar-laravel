@@ -22,11 +22,15 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
+use Carbon\Carbon;
+
 $factory->define(App\Event::class, function (Faker\Generator $faker) {
+    $date_start = $faker->dateTimeThisYear();
+    $date_end = new Carbon($date_start->format('r'));
     return [
         'title' => $faker->sentence(4),
-        'start' =>  $faker->dateTimeThisYear(),
-        'end' =>  $faker->dateTimeThisMonth(),
+        'start' =>  $date_start,
+        'end' =>  $date_end->addHours($faker->numberBetween(1, 35)),
         'color' => $faker->hexColor
     ];
 });

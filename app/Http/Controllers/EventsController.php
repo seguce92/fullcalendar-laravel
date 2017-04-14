@@ -14,7 +14,7 @@ class EventsController extends Controller
      */
     public function index()
     {
-        $data = Event::get(['title', 'start', 'end', 'color']);
+        $data = Event::get(['id', 'title', 'start', 'end', 'color']);
 
         return Response()->json($data);
     }
@@ -89,6 +89,18 @@ class EventsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $event = Event::find($id);
+
+        if($event == null)
+            return Response()->json([
+                'message'   =>  'error delete.'
+            ]);
+
+        $event->delete();
+
+        return Response()->json([
+            'message'   =>  'success delete.'
+        ]);
+
     }
 }
