@@ -1,4 +1,4 @@
-# Laravel PHP Framework
+# Laravel Full Calendar
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
 [![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
@@ -6,22 +6,46 @@
 [![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
 [![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+## Setting application
+1. Install the dependencies for the proper functioning of laravel 
+```php
+$ composer install
+```
+2. Copy the .env.example file to .env 
+in Linux Os
+```
+$ cp .env.example .env
+```
+or in Microsoft Windows
+```
+c:\ copy .env.example .env
+```
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+3. In the root path of the project run the following command
 
-## Official Documentation
+```php
+$ php artisan key:generate
+```
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+4. Edit to file .env with setting of Database
 
-## Contributing
+```php
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=database
+DB_USERNAME=username
+DB_PASSWORD=password
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+5. execute next command
 
-## Security Vulnerabilities
+```
+$ php artisan migrate --seed
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+6. If environment is a local, open browser in http://localhost:8000 or open in the web server http://0.0.0.0:port/app
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+```
+$ php artisan serve
+```

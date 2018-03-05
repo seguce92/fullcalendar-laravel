@@ -78,7 +78,21 @@ class EventsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $event = Event::find($id);
+        $event->title = $request->title;
+        $event->start = $request->date_start . ' ' . $request->time_start;
+        $event->end = $request->date_end;
+        $event->color = $request->color;
+
+        if($event->save())
+            return response()->json([
+                'status'    =>  201,
+                'message'   =>  'EVENTO ACTUALIZADO EXITOSAMENTE'
+            ]);
+        return response()->json([
+            'status'    =>  503, 
+            'message'   =>  'SE PRODUJO UN ERROR AL ACTUALIZAR EVENTO'
+        ]);
     }
 
     /**
@@ -93,13 +107,13 @@ class EventsController extends Controller
 
         if($event == null)
             return Response()->json([
-                'message'   =>  'error delete.'
+                'message'   =>  'ERROR AL ELIMINAR EVENTO'
             ]);
 
         $event->delete();
 
         return Response()->json([
-            'message'   =>  'success delete.'
+            'message'   =>  'EVENTO ELIMINADO EXITOSAMENTE.'
         ]);
 
     }
